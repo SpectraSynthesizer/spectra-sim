@@ -1,0 +1,60 @@
+spec TowersOfHanoi
+
+/**
+ * The Towers of Hanoi is a mathematical puzzle.
+ * It consists of three rods and a number of disks of different sizes, which can slide onto any rod.
+ * The puzzle starts with the disks in a neat stack in ascending order of size on one rod,
+ * the smallest at the top, thus making a conical shape.
+ * The objective of the puzzle is to move the entire stack to another rod, obeying the following simple rules:
+ *   1. Only one disk can be moved at a time.
+ *   2. Each move consists of taking the upper disk from one of the stacks and placing it on top of another stack or on an empty rod.
+ *   3. No larger disk may be placed on top of a smaller disk.
+ * With 3 disks, the puzzle can be solved in 7 moves.
+ * The minimal number of moves required to solve a Towers of Hanoi puzzle is 2^n - 1, where n is the number of disks.
+ */
+
+define NUMBEROFDISKS := 5;
+define NUMBEROFDISKSMINUSONE := NUMBEROFDISKS-1;
+define NUMBEROFDISKSMINUSTWO := NUMBEROFDISKS-2;
+
+define NUMBEROFTOWERSMINUSONE := 2;
+
+// position of the Disks
+env Int(0..NUMBEROFTOWERSMINUSONE)[NUMBEROFDISKS] diskPosition;
+
+// current disk to move
+sys Int(0..NUMBEROFDISKSMINUSONE) moveDiskNumber;
+sys Int(0..NUMBEROFTOWERSMINUSONE) moveDiskToTower;
+  
+asm startLeft:
+forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+ diskPosition[i] = 0;
+  
+asm carryingADiskChangesItsPosition:
+G forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+ forall j in Int(0..NUMBEROFTOWERSMINUSONE) .
+  (moveDiskNumber=i & moveDiskToTower=j) -> (next(diskPosition[i]) = j);
+
+asm notCarryingADiskKeepsDiskPosition:
+G forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+ (!(moveDiskNumber=i))->(diskPosition[i]=next(diskPosition[i])) ;
+    
+gar cantPutALargerDiskOnTopOfSmallerDisk:
+G forall i in Int(1..NUMBEROFDISKSMINUSONE) . 
+ forall j in Int(0..NUMBEROFDISKSMINUSTWO) . 
+  forall k in Int(0..NUMBEROFTOWERSMINUSONE) . 
+   (j<i & moveDiskNumber=i & diskPosition[j]=k) -> moveDiskToTower != k;
+    
+gar mustMoveSmallestDiskFirst:
+G forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+ forall j in Int(1..NUMBEROFDISKSMINUSONE) .
+  (j>i & diskPosition[i]=diskPosition[j]) -> moveDiskNumber!=j;
+     
+gar allDisksMustReachRighmostTower:
+GF forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+ diskPosition[i]=NUMBEROFTOWERSMINUSONE;
+ 
+gar onceSolvedNoDiskMoves:
+G (forall i in Int(0..NUMBEROFDISKSMINUSONE) .diskPosition[i]=NUMBEROFTOWERSMINUSONE) -> 
+  (forall i in Int(0..NUMBEROFDISKSMINUSONE) .diskPosition[i]=next(diskPosition[i]));
+ 

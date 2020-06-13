@@ -1,0 +1,90 @@
+import "DwyerPatterns.spectra"
+
+/**
+ * The second module we created in the class meeting on Nov, 7th.
+ * <br>
+ * We add a banana to the chess board that is controlled by the environment.
+ * 
+ * The monkey has to catch it.
+ * 
+ * It stays in the same place until the monkey eats the banana.
+ * 
+ * Then a new banana appears. 
+ */
+module MonkeyWithBanana     
+      
+sys Dim[2] monkey;
+
+env Dim[2] banana;
+
+type Dim = Int(0..7);
+
+define
+  inBed :=  monkey[0]=0 & monkey[1]=0;    
+  atTV := monkey[0]=2 & monkey[1]=2;
+  inShower :=   monkey[0]=2 & monkey[1]=0;
+  atBanana := monkey[0]=banana[0] & monkey[1]=banana[1];
+  
+guarantee startInBed:
+  inBed;  
+
+/**
+ * restrict the moves of the monkey to go only to neighboring
+ * squares
+ * 
+ */
+gar monkeyMoves:
+  G moveDist(monkey[0]) & moveDist(monkey[1]); 
+    
+/**
+ * make sure parameter changes by at most +/- one 
+ * @param Dim pos
+ */    
+predicate moveDist(Dim pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);     
+    
+gar
+  GF inBed;
+  
+gar
+  GF atTV;
+  
+gar haveShowerAfterLeavingTVandGoingToBed:
+  pBecomesTrue_betweenQandR(inShower, atTV, inBed);  
+  
+gar alwaysEventuallyEatABanana:
+  GF atBanana;  
+
+
+
+
+// Pattern04 example
+gar noBananaAfterSleepBeforeTv:
+	pIsFalse_BetweenQandR(atBanana, inBed, atTV);
+
+
+
+
+
+
+
+// Step 1
+asm G atBanana -> !(next(banana[0])=0 & next(banana[1])=0);
+
+
+
+
+// Step 2
+asm banana[0]!=0 | banana[1]!=0;
+  
+  
+  
+  
+  
+/**
+ * use an assumption to only consider environments with bananas that stay
+ */
+asm bananasDontMoveUntilMonkeyIsThere:
+  G !atBanana -> (banana[0]=next(banana[0]) & banana[1]=next(banana[1]));

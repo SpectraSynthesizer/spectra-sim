@@ -1,0 +1,68 @@
+import "DwyerPatterns.spectra"
+
+/**
+ * The first module we created in the class meeting on Nov, 7th.
+ *
+ * A monkey lives on a chess board and we synthesize strategies 
+ * for it to move between places. 
+ */
+ 
+module Monkey
+
+/**
+ * we declare a variable controlled by the system using keyword sys
+ * 
+ * the variable is an array with two fields
+ * 
+ * the type of each field is a bounded integer ranging from 0 to 7  
+ */			
+sys Int(0..7)[2] monkey;
+
+
+/**
+ * definitions allow shortcuts for writing new names, e.g., inBed, to express
+ * that the monkey is at position (0,0), i.e., monkey[0]=0 & monkey[1]=0   
+ */
+define
+  inBed :=	monkey[0]=0 & monkey[1]=0;		
+	atTV := monkey[0]=2	& monkey[1]=2;
+	inShower := 	monkey[0]=2 & monkey[1]=0;
+	
+/**
+ * this guarantee has to hold in the initial state
+ */	
+gar 
+  inBed;  
+
+/**
+ * The guarantees starting with G hold in all states. We can refer to the next 
+ * value of a variable by "next"
+ * 
+ * note that these two guarantees only allow moving in diagonals
+ */
+gar
+  G monkey[0]+1 = next(monkey[0]) | 
+    monkey[0]-1 = next(monkey[0]); 
+gar
+  G monkey[1]+1 = next(monkey[1]) | 
+    monkey[1]-1 = next(monkey[1]); 
+
+/**
+ * guarantees starting with GF must hold infinitely often
+ */
+gar
+  GF inBed;
+  
+gar
+  GF atTV;
+  
+  
+/**
+ * guarantees can instantiate patterns
+ */  
+gar afterTVeventuallyGoToBed: 
+  pRespondsToS(atTV, inBed);
+    
+gar haveShowerAfterLeavingTVandGoingToBed:
+  pBecomesTrue_betweenQandR(inShower, atTV, inBed);  
+  

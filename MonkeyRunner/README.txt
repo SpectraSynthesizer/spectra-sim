@@ -1,0 +1,1 @@
+To see the result of synthesis synthesize a symbolic controller and run the Java program game.Board.

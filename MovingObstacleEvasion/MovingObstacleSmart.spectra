@@ -1,0 +1,85 @@
+spec MovingObstacle
+
+define DIM_SIZE := 8;
+define DIM_SIZE_MINUS_ONE := DIM_SIZE - 1;
+define NUM_OF_GLITCHES := 1;
+
+env Int(1..DIM_SIZE_MINUS_ONE)[2] obstacle;
+env boolean obsWait;
+
+env Int(0..(NUM_OF_GLITCHES + 1)) glitches;
+env boolean isGlitch;
+define noGlitch := !isGlitch;
+
+env boolean isObstacleTurn;
+define isRobotTurn := !isObstacleTurn;
+
+sys Int(1..DIM_SIZE)[2] robot;
+
+asm initiallyObstacleAtLowerRightCorner:
+(obstacle[0] = DIM_SIZE - 1) & (obstacle[1] = DIM_SIZE - 1);
+
+asm initiallyObsWaitTrue:
+obsWait;
+
+asm initiallyObstacleTurn:
+isObstacleTurn;
+
+gar initiallyRobotAtZero:
+robot[0] = 1 & robot[1] = 1;
+
+asm initiallyNoGlitch:
+noGlitch;
+
+asm initialGlitches:
+glitches = 0;
+
+asm addGlitch:
+G (isGlitch->(next(glitches)=glitches+1)) & (noGlitch->(next(glitches)=glitches));
+
+asm maxGlitches:
+G next(glitches = NUM_OF_GLITCHES -> noGlitch);
+
+asm glitchOnlyWhenObstacleTurn:
+G next(isRobotTurn->noGlitch);
+
+asm turnSwitches:
+G ((isObstacleTurn | obsWait)->next(isRobotTurn)) & ((isRobotTurn & !obsWait)->next(isObstacleTurn));
+
+asm obswaitSwitches:
+G ((isRobotTurn | isGlitch)->(next(obsWait) = !obsWait)) & ((isObstacleTurn & noGlitch)->(next(obsWait) = obsWait));
+
+asm obstacleDoesNotMoveAtRobotTurn:
+G isRobotTurn -> (next(obstacle[0]) = obstacle[0] & next(obstacle[1]) = obstacle[1]);
+
+gar robotDoesNotMoveAtObstacleTurn:
+G isObstacleTurn -> (next(robot[0]) = robot[0] & next(robot[1]) = robot[1]);
+
+predicate moveRobot(Int(1..DIM_SIZE) pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);
+  
+predicate moveObstacle(Int(1..DIM_SIZE_MINUS_ONE) pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);    
+
+asm obstacleMovesAtMostOne:
+G moveObstacle(obstacle[0]) & moveObstacle(obstacle[1]);
+
+asm obstacleIsSmart:
+G isObstacleTurn ->
+  ((obstacle[0] > robot[0] -> next(obstacle[0]) = obstacle[0] - 1) &
+   (obstacle[0] < robot[0] - 1 -> next(obstacle[0]) = obstacle[0] + 1) &
+   (obstacle[1] > robot[1] -> next(obstacle[1]) = obstacle[1] - 1) &
+   (obstacle[1] < robot[1] - 1 -> next(obstacle[1]) = obstacle[1] + 1));
+
+gar robotMovesAtMostOne:
+G moveRobot(robot[0]) & moveRobot(robot[1]);
+
+gar robotAvoidsObstacle:
+G (robot[0] != obstacle[0] | robot[1] != obstacle[1]) &
+(robot[0] != obstacle[0] + 1 | robot[1] != obstacle[1]) &
+(robot[0] != obstacle[0] | robot[1] != obstacle[1] + 1) &
+(robot[0] != obstacle[0] + 1 | robot[1] != obstacle[1] + 1);
