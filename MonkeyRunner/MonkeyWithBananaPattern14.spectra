@@ -11,7 +11,7 @@ import "DwyerPatterns.spectra"
  * 
  * Then a new banana appears. 
  */
-module MonkeyWithBanana     
+spec MonkeyWithBanana     
       
 sys Dim[2] monkey;
 
@@ -26,7 +26,7 @@ define
   atBanana := monkey[0]=banana[0] & monkey[1]=banana[1];
   
 guarantee startInBed:
-  inBed;  
+  ini inBed;  
 
 /**
  * restrict the moves of the monkey to go only to neighboring
@@ -34,7 +34,7 @@ guarantee startInBed:
  * 
  */
 gar monkeyMoves:
-  G moveDist(monkey[0]) & moveDist(monkey[1]); 
+  always moveDist(monkey[0]) & moveDist(monkey[1]); 
     
 /**
  * make sure parameter changes by at most +/- one 
@@ -46,17 +46,17 @@ predicate moveDist(Dim pos):
   pos-1 = next(pos);     
     
 gar
-  GF inBed;
+  alwEv inBed;
   
 gar
-  GF atTV;
+  alwEv atTV;
 
 
 
 
 // Pattern14 example
 gar maximumTwoTimesInShower:
-	pOccursAtMost2Times(inShower);
+	P_occures_at_most_twice_globally(inShower);
 
 
 
@@ -65,7 +65,7 @@ gar maximumTwoTimesInShower:
 
 
 // Step 1	
-asm G atBanana -> !(next(banana[0])=2 & next(banana[1])=0);
+asm always atBanana -> !(next(banana[0])=2 & next(banana[1])=0);
 
 
 
@@ -75,10 +75,10 @@ asm G atBanana -> !(next(banana[0])=2 & next(banana[1])=0);
 //  pBecomesTrue_betweenQandR(inShower, atTV, inBed);
   
 gar alwaysEventuallyEatABanana:
-  GF atBanana;
+  alwEv atBanana;
   
 /**
  * use an assumption to only consider environments with bananas that stay
  */
 asm bananasDontMoveUntilMonkeyIsThere:
-  G !atBanana -> (banana[0]=next(banana[0]) & banana[1]=next(banana[1]));
+  always !atBanana -> (banana[0]=next(banana[0]) & banana[1]=next(banana[1]));

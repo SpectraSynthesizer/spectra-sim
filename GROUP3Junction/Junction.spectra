@@ -102,32 +102,32 @@ env boolean roadConstructions;
 // *** whenever vehicles are coming they have to stay there until they are allowed to cross ***
 // ********************************************************************************************
 
-asm G consistentVehicleAssertion(vehiclesNorth[0], greenNorthVehicles[0]);
-asm G consistentVehicleAssertion(vehiclesNorth[1], greenNorthVehicles[1]);
-asm G consistentVehicleAssertion(vehiclesNorth[2], greenNorthVehicles[2]);
-asm G consistentVehicleAssertion(vehiclesSouth[0], greenSouthVehicles[0]);
-asm G consistentVehicleAssertion(vehiclesSouth[1], greenSouthVehicles[1]);
-asm G consistentVehicleAssertion(vehiclesSouth[2], greenSouthVehicles[2]);
-asm G consistentVehicleAssertion(vehiclesEast[0], greenEastVehicles[0]);
-asm G consistentVehicleAssertion(vehiclesEast[1], greenEastVehicles[1]);
-asm G consistentVehicleAssertion(vehiclesEast[2], greenEastVehicles[2]);
-asm G consistentVehicleAssertion(vehiclesWest[0], greenWestVehicles[0]);
-asm G consistentVehicleAssertion(vehiclesWest[1], greenWestVehicles[1]);
-asm G consistentVehicleAssertion(vehiclesWest[2], greenWestVehicles[2]);
+asm always consistentVehicleAssertion(vehiclesNorth[0], greenNorthVehicles[0]);
+asm always consistentVehicleAssertion(vehiclesNorth[1], greenNorthVehicles[1]);
+asm always consistentVehicleAssertion(vehiclesNorth[2], greenNorthVehicles[2]);
+asm always consistentVehicleAssertion(vehiclesSouth[0], greenSouthVehicles[0]);
+asm always consistentVehicleAssertion(vehiclesSouth[1], greenSouthVehicles[1]);
+asm always consistentVehicleAssertion(vehiclesSouth[2], greenSouthVehicles[2]);
+asm always consistentVehicleAssertion(vehiclesEast[0], greenEastVehicles[0]);
+asm always consistentVehicleAssertion(vehiclesEast[1], greenEastVehicles[1]);
+asm always consistentVehicleAssertion(vehiclesEast[2], greenEastVehicles[2]);
+asm always consistentVehicleAssertion(vehiclesWest[0], greenWestVehicles[0]);
+asm always consistentVehicleAssertion(vehiclesWest[1], greenWestVehicles[1]);
+asm always consistentVehicleAssertion(vehiclesWest[2], greenWestVehicles[2]);
 
 
 // ***********************************************************************************************
 // *** whenever pedestrians are coming they have to stay there until they are allowed to cross ***
 // ***********************************************************************************************
 
-asm G consistentPedestrianAssertion(pedestriansNorthPressed[0], greenNorthPedestrians[0]);
-asm G consistentPedestrianAssertion(pedestriansNorthPressed[1], greenNorthPedestrians[1]);
-asm G consistentPedestrianAssertion(pedestriansSouthPressed[0], greenSouthPedestrians[0]);
-asm G consistentPedestrianAssertion(pedestriansSouthPressed[1], greenSouthPedestrians[1]);
-asm G consistentPedestrianAssertion(pedestriansEastPressed[0], greenEastPedestrians[0]);
-asm G consistentPedestrianAssertion(pedestriansEastPressed[1], greenEastPedestrians[1]);
-asm G consistentPedestrianAssertion(pedestriansWestPressed[0], greenWestPedestrians[0]);
-asm G consistentPedestrianAssertion(pedestriansWestPressed[1], greenWestPedestrians[1]);
+asm always consistentPedestrianAssertion(pedestriansNorthPressed[0], greenNorthPedestrians[0]);
+asm always consistentPedestrianAssertion(pedestriansNorthPressed[1], greenNorthPedestrians[1]);
+asm always consistentPedestrianAssertion(pedestriansSouthPressed[0], greenSouthPedestrians[0]);
+asm always consistentPedestrianAssertion(pedestriansSouthPressed[1], greenSouthPedestrians[1]);
+asm always consistentPedestrianAssertion(pedestriansEastPressed[0], greenEastPedestrians[0]);
+asm always consistentPedestrianAssertion(pedestriansEastPressed[1], greenEastPedestrians[1]);
+asm always consistentPedestrianAssertion(pedestriansWestPressed[0], greenWestPedestrians[0]);
+asm always consistentPedestrianAssertion(pedestriansWestPressed[1], greenWestPedestrians[1]);
 
 
 // ******************************************************************************************
@@ -144,7 +144,7 @@ asm alw EmergencyCrashExclusion(vehiclesNorth[1], vehiclesNorth[2], vehiclesEast
 // *** situations in which there is no emergency vehicle at all or it gets red light     ***
 // *****************************************************************************************
 
-asm GF noEmergency(vehiclesNorth[0],vehiclesNorth[1],vehiclesNorth[2],vehiclesSouth[0],vehiclesSouth[1],vehiclesSouth[2],
+asm alwEv noEmergency(vehiclesNorth[0],vehiclesNorth[1],vehiclesNorth[2],vehiclesSouth[0],vehiclesSouth[1],vehiclesSouth[2],
 	vehiclesEast[0],vehiclesEast[1],vehiclesEast[2],vehiclesWest[0],vehiclesWest[1],vehiclesWest[2],greenNorthVehicles[0],
 	greenNorthVehicles[1],greenNorthVehicles[2],greenSouthVehicles[0],greenSouthVehicles[1],greenSouthVehicles[2],
 	greenEastVehicles[0],greenEastVehicles[1],greenEastVehicles[2],greenWestVehicles[0],greenWestVehicles[1],greenWestVehicles[2]);
@@ -155,7 +155,7 @@ asm GF noEmergency(vehiclesNorth[0],vehiclesNorth[1],vehiclesNorth[2],vehiclesSo
 // *** the assumption is that there is no fog and road constructions all the time ***
 // **********************************************************************************
 
-asm GF !foggy & !roadConstructions;
+asm alwEv !foggy & !roadConstructions;
 
 
 // *******************************************************************************************************
@@ -184,18 +184,18 @@ sys boolean[2] greenWestPedestrians;
 // *** in case car is coming, it eventually will get green light ***
 // ******************************************************************
 
-gar pRespondsToS(vehiclesNorth[1]=CAR, greenNorthVehicles[1]);
-gar pRespondsToS(vehiclesNorth[2]=CAR, greenNorthVehicles[2]);
-gar pRespondsToS(vehiclesNorth[0]=CAR, greenNorthVehicles[0]);
-gar pRespondsToS(vehiclesSouth[1]=CAR, greenSouthVehicles[1]);
-gar pRespondsToS(vehiclesSouth[2]=CAR, greenSouthVehicles[2]);
-gar pRespondsToS(vehiclesSouth[0]=CAR, greenSouthVehicles[0]);
-gar pRespondsToS(vehiclesEast[1]=CAR, greenEastVehicles[1]);
-gar pRespondsToS(vehiclesEast[2]=CAR, greenEastVehicles[2]);
-gar pRespondsToS(vehiclesEast[0]=CAR, greenEastVehicles[0]);
-gar pRespondsToS(vehiclesWest[1]=CAR, greenWestVehicles[1]);
-gar pRespondsToS(vehiclesWest[2]=CAR, greenWestVehicles[2]);
-gar pRespondsToS(vehiclesWest[0]=CAR, greenWestVehicles[0]);
+gar S_responds_to_P_globally(greenNorthVehicles[1], vehiclesNorth[1]=CAR);
+gar S_responds_to_P_globally(greenNorthVehicles[2], vehiclesNorth[2]=CAR);
+gar S_responds_to_P_globally(greenNorthVehicles[0], vehiclesNorth[0]=CAR);
+gar S_responds_to_P_globally(greenSouthVehicles[1], vehiclesSouth[1]=CAR);
+gar S_responds_to_P_globally(greenSouthVehicles[2], vehiclesSouth[2]=CAR);
+gar S_responds_to_P_globally(greenSouthVehicles[0], vehiclesSouth[0]=CAR);
+gar S_responds_to_P_globally(greenEastVehicles[1], vehiclesEast[1]=CAR);
+gar S_responds_to_P_globally(greenEastVehicles[2], vehiclesEast[2]=CAR);
+gar S_responds_to_P_globally(greenEastVehicles[0], vehiclesEast[0]=CAR);
+gar S_responds_to_P_globally(greenWestVehicles[1], vehiclesWest[1]=CAR);
+gar S_responds_to_P_globally(greenWestVehicles[2], vehiclesWest[2]=CAR);
+gar S_responds_to_P_globally(greenWestVehicles[0], vehiclesWest[0]=CAR);
 
 
 // ***************************************************************
@@ -204,43 +204,43 @@ gar pRespondsToS(vehiclesWest[0]=CAR, greenWestVehicles[0]);
 // ***************************************************************
 
 monitor boolean pedestrianNorthWestWaiting {
-	!pedestrianNorthWestWaiting;
-	G next(pedestrianNorthWestWaiting)=((pedestriansNorthPressed[0] | pedestrianNorthWestWaiting) & !greenNorthPedestrians[0]);
+	ini !pedestrianNorthWestWaiting;
+	always next(pedestrianNorthWestWaiting)=((pedestriansNorthPressed[0] | pedestrianNorthWestWaiting) & !greenNorthPedestrians[0]);
 }
 
 monitor boolean pedestrianNorthEastWaiting {
-	!pedestrianNorthEastWaiting;
-	G next(pedestrianNorthEastWaiting)=((pedestriansNorthPressed[1] | pedestrianNorthEastWaiting) & !greenNorthPedestrians[1]);
+	ini !pedestrianNorthEastWaiting;
+	always next(pedestrianNorthEastWaiting)=((pedestriansNorthPressed[1] | pedestrianNorthEastWaiting) & !greenNorthPedestrians[1]);
 }
 
 monitor boolean pedestrianSouthWestWaiting {
-	!pedestrianSouthWestWaiting;
-	G next(pedestrianSouthWestWaiting)=((pedestriansSouthPressed[0] | pedestrianSouthWestWaiting) & !greenSouthPedestrians[0]);
+	ini !pedestrianSouthWestWaiting;
+	always next(pedestrianSouthWestWaiting)=((pedestriansSouthPressed[0] | pedestrianSouthWestWaiting) & !greenSouthPedestrians[0]);
 }
 
 monitor boolean pedestrianSouthEastWaiting {
-	!pedestrianSouthEastWaiting;
-	G next(pedestrianSouthEastWaiting)=((pedestriansSouthPressed[1] | pedestrianSouthEastWaiting) & !greenSouthPedestrians[1]);
+	ini !pedestrianSouthEastWaiting;
+	always next(pedestrianSouthEastWaiting)=((pedestriansSouthPressed[1] | pedestrianSouthEastWaiting) & !greenSouthPedestrians[1]);
 }
 
 monitor boolean pedestrianWestNorthWaiting {
-	!pedestrianWestNorthWaiting;
-	G next(pedestrianWestNorthWaiting)=((pedestriansWestPressed[0] | pedestrianWestNorthWaiting) & !greenWestPedestrians[0]);
+	ini !pedestrianWestNorthWaiting;
+	always next(pedestrianWestNorthWaiting)=((pedestriansWestPressed[0] | pedestrianWestNorthWaiting) & !greenWestPedestrians[0]);
 }
 
 monitor boolean pedestrianWestSouthWaiting {
-	!pedestrianWestSouthWaiting;
-	G next(pedestrianWestSouthWaiting)=((pedestriansWestPressed[1] | pedestrianWestSouthWaiting) & !greenWestPedestrians[1]);
+	ini !pedestrianWestSouthWaiting;
+	always next(pedestrianWestSouthWaiting)=((pedestriansWestPressed[1] | pedestrianWestSouthWaiting) & !greenWestPedestrians[1]);
 }
 
 monitor boolean pedestrianEastNorthWaiting {
-	!pedestrianEastNorthWaiting;
-	G next(pedestrianEastNorthWaiting)=((pedestriansEastPressed[0] | pedestrianEastNorthWaiting) & !greenEastPedestrians[0]);
+	ini !pedestrianEastNorthWaiting;
+	always next(pedestrianEastNorthWaiting)=((pedestriansEastPressed[0] | pedestrianEastNorthWaiting) & !greenEastPedestrians[0]);
 }
 
 monitor boolean pedestrianEastSouthWaiting {
-	!pedestrianEastSouthWaiting;
-	G next(pedestrianEastSouthWaiting)=((pedestriansEastPressed[1] | pedestrianEastSouthWaiting) & !greenEastPedestrians[1]);
+	ini !pedestrianEastSouthWaiting;
+	always next(pedestrianEastSouthWaiting)=((pedestriansEastPressed[1] | pedestrianEastSouthWaiting) & !greenEastPedestrians[1]);
 }
 
 
@@ -250,8 +250,8 @@ monitor boolean pedestrianEastSouthWaiting {
 // *******************************************************************
 
 monitor boolean fogAction {
-	!fogAction;
-	G next(fogAction)=(foggy & (!anyVehicle | fogAction | (closedRoadAction & !anyVehicleExceptClosedRoad))) ;
+	ini !fogAction;
+	always next(fogAction)=(foggy & (!anyVehicle | fogAction | (closedRoadAction & !anyVehicleExceptClosedRoad))) ;
 }
 
 
@@ -261,8 +261,8 @@ monitor boolean fogAction {
 // ***************************************************************************
 
 monitor boolean closedRoadAction {
-	!closedRoadAction;
-	G next(closedRoadAction)=(roadConstructions & (!anyVehicleToClosedRoad | closedRoadAction)); 
+	ini !closedRoadAction;
+	always next(closedRoadAction)=(roadConstructions & (!anyVehicleToClosedRoad | closedRoadAction)); 
 }
 
 
@@ -271,7 +271,7 @@ monitor boolean closedRoadAction {
 // *** light at the same time, otherwise a car accident can happen ***
 // *******************************************************************
 
-gar alw TrafficLightsExclusion(greenNorthVehicles[1], greenNorthVehicles[2], greenEastVehicles[1], 
+gar always TrafficLightsExclusion(greenNorthVehicles[1], greenNorthVehicles[2], greenEastVehicles[1], 
 	greenEastVehicles[2], greenSouthVehicles[1], 	greenSouthVehicles[2], greenWestVehicles[1],
 	greenWestVehicles[2]);
 	
@@ -281,7 +281,7 @@ gar alw TrafficLightsExclusion(greenNorthVehicles[1], greenNorthVehicles[2], gre
 // *** lights on this road get green light, otherwise pedestrians can be injured ***
 // *********************************************************************************
 
-gar alw VehiclesAndPedestriansTrafficLightExclusion(greenNorthPedestrians[0], greenNorthPedestrians[1],
+gar always VehiclesAndPedestriansTrafficLightExclusion(greenNorthPedestrians[0], greenNorthPedestrians[1],
 				 greenEastPedestrians[0], greenEastPedestrians[1],greenSouthPedestrians[0], greenSouthPedestrians[1],
 				 greenWestPedestrians[0], greenWestPedestrians[1], greenNorthVehicles[0], greenNorthVehicles[1],
 				 greenNorthVehicles[2], greenEastVehicles[0], greenEastVehicles[1], greenEastVehicles[2], 
@@ -293,18 +293,18 @@ gar alw VehiclesAndPedestriansTrafficLightExclusion(greenNorthPedestrians[0], gr
 // *** whenever emergency vehicle is coming, let it cross immediately *** 
 // **********************************************************************
 
-gar G quickEmergencyCrossingAssertion(vehiclesNorth[0], greenNorthVehicles[0], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesNorth[1], greenNorthVehicles[1], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesNorth[2], greenNorthVehicles[2], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesEast[1], greenEastVehicles[1], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesEast[2], greenEastVehicles[2], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesSouth[0], greenSouthVehicles[0], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesSouth[2], greenSouthVehicles[2], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesWest[0], greenWestVehicles[0], fogAction);
-gar G quickEmergencyCrossingAssertion(vehiclesWest[1], greenWestVehicles[1], fogAction);
-gar G quickEmergencyCrossingAssertionWithClosedRoad(vehiclesEast[0], greenEastVehicles[0], fogAction, closedRoadAction);
-gar G quickEmergencyCrossingAssertionWithClosedRoad(vehiclesSouth[1], greenSouthVehicles[1], fogAction, closedRoadAction);
-gar G quickEmergencyCrossingAssertionWithClosedRoad(vehiclesWest[2], greenWestVehicles[2], fogAction, closedRoadAction);
+gar always quickEmergencyCrossingAssertion(vehiclesNorth[0], greenNorthVehicles[0], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesNorth[1], greenNorthVehicles[1], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesNorth[2], greenNorthVehicles[2], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesEast[1], greenEastVehicles[1], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesEast[2], greenEastVehicles[2], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesSouth[0], greenSouthVehicles[0], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesSouth[2], greenSouthVehicles[2], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesWest[0], greenWestVehicles[0], fogAction);
+gar always quickEmergencyCrossingAssertion(vehiclesWest[1], greenWestVehicles[1], fogAction);
+gar always quickEmergencyCrossingAssertionWithClosedRoad(vehiclesEast[0], greenEastVehicles[0], fogAction, closedRoadAction);
+gar always quickEmergencyCrossingAssertionWithClosedRoad(vehiclesSouth[1], greenSouthVehicles[1], fogAction, closedRoadAction);
+gar always quickEmergencyCrossingAssertionWithClosedRoad(vehiclesWest[2], greenWestVehicles[2], fogAction, closedRoadAction);
 
 
 // ********************************************************************
@@ -312,14 +312,14 @@ gar G quickEmergencyCrossingAssertionWithClosedRoad(vehiclesWest[2], greenWestVe
 // *** for vehicles and open for pedestrians until fog passes		*** 
 // ********************************************************************
 
-gar G fogAction -> allRed & allGreen;
+gar always fogAction -> allRed & allGreen;
 
 
 // ********************************************************************************
 // *** whenever closed road action is taking place, close all ways to this road *** 
 // ********************************************************************************
 
-gar G closedRoadAction -> redLightsToClosedRoad;
+gar always closedRoadAction -> redLightsToClosedRoad;
 
 
 // *******************************************************************************
@@ -327,11 +327,11 @@ gar G closedRoadAction -> redLightsToClosedRoad;
 // *** situation in which pedestrian is starved and never allowed to cross     *** 
 // *******************************************************************************
 
-gar GF !pedestrianNorthWestWaiting;
-gar GF !pedestrianNorthEastWaiting;
-gar GF !pedestrianSouthWestWaiting;
-gar GF !pedestrianSouthEastWaiting;
-gar GF !pedestrianWestNorthWaiting;
-gar GF !pedestrianWestSouthWaiting;
-gar GF !pedestrianEastNorthWaiting;
-gar GF !pedestrianEastSouthWaiting;
+gar alwEv !pedestrianNorthWestWaiting;
+gar alwEv !pedestrianNorthEastWaiting;
+gar alwEv !pedestrianSouthWestWaiting;
+gar alwEv !pedestrianSouthEastWaiting;
+gar alwEv !pedestrianWestNorthWaiting;
+gar alwEv !pedestrianWestSouthWaiting;
+gar alwEv !pedestrianEastNorthWaiting;
+gar alwEv !pedestrianEastSouthWaiting;

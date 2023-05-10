@@ -40,7 +40,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 
 @SuppressWarnings("serial")
 public class Board extends JFrame {
@@ -59,7 +59,7 @@ public class Board extends JFrame {
 
 	public void run() throws Exception {
 
-		executor = new ControllerExecutor(new BasicJitController(), "out");
+		executor = new ControllerExecutor(new BasicJitController(), "out/jit", "MonkeyWithBanana");
 		m = ImageIO.read(new File("img/monkey.jpg"));
 
 		Random rand = new Random();

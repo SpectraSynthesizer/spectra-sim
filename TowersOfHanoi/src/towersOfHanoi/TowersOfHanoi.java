@@ -39,7 +39,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 
 @SuppressWarnings("serial")
 public class TowersOfHanoi extends JComponent {
@@ -72,7 +72,7 @@ public class TowersOfHanoi extends JComponent {
 				// by default, creates a log file of the execution in ./logs folder
 				// If you do not see the ./logs folder, refresh the Eclipse package explorer
 				try {
-					ctrlExec = new ControllerExecutor(new BasicJitController(), "out");
+					ctrlExec = new ControllerExecutor(new BasicJitController(), "out/jit", "TowersOfHanoi");
 					
 					// We pass an empty map to the executor because there is no input from the
 					// environment in this simulation

@@ -41,7 +41,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 
 @SuppressWarnings("serial")
 public class Board extends JFrame {
@@ -50,7 +50,7 @@ public class Board extends JFrame {
 	static final int addedWaterUnits = 5;
 	final int capacity = 9;
 	static int[] buckets = new int[numberOfBuckets];
-	static int[] unitsToFill = new int[numberOfBuckets];;
+	static int[] unitsToFill = new int[numberOfBuckets];
 	static int firstToEmpty = 0;
 	static boolean isCinderellaTurn = true;
 	BufferedImage imgBucket;
@@ -81,7 +81,7 @@ public class Board extends JFrame {
 			}
 		}));
 		
-		executor = new ControllerExecutor(new BasicJitController(), "out");
+		executor = new ControllerExecutor(new BasicJitController(), "out/jit", "Cinderella");
 		imgBucket = ImageIO.read(new File("img/bucket.jpg"));
 		imgCinderella = ImageIO.read(new File("img/cinderella.jpg"));
 		imgStepmother = ImageIO.read(new File("img/stepmother.jpg"));
@@ -138,11 +138,11 @@ public class Board extends JFrame {
 			unitsToFill[index]++;
 		}
 		
-		inputs.put("unitsToFill[0]", new Integer(unitsToFill[0]).toString());
-		inputs.put("unitsToFill[1]", new Integer(unitsToFill[1]).toString());
-		inputs.put("unitsToFill[2]", new Integer(unitsToFill[2]).toString());
-		inputs.put("unitsToFill[3]", new Integer(unitsToFill[3]).toString());
-		inputs.put("unitsToFill[4]", new Integer(unitsToFill[4]).toString());
+		inputs.put("unitsToFill[0]", Integer.toString(unitsToFill[0]));
+		inputs.put("unitsToFill[1]", Integer.toString(unitsToFill[1]));
+		inputs.put("unitsToFill[2]", Integer.toString(unitsToFill[2]));
+		inputs.put("unitsToFill[3]", Integer.toString(unitsToFill[3]));
+		inputs.put("unitsToFill[4]", Integer.toString(unitsToFill[4]));
 	}
 
 	@Override
