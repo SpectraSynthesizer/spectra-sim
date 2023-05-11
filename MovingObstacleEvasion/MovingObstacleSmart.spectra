@@ -17,43 +17,43 @@ define isRobotTurn := !isObstacleTurn;
 sys Int(1..DIM_SIZE)[2] robot;
 
 asm initiallyObstacleAtLowerRightCorner:
-(obstacle[0] = DIM_SIZE - 1) & (obstacle[1] = DIM_SIZE - 1);
+ini (obstacle[0] = DIM_SIZE - 1) & (obstacle[1] = DIM_SIZE - 1);
 
 asm initiallyObsWaitTrue:
-obsWait;
+ini obsWait;
 
 asm initiallyObstacleTurn:
-isObstacleTurn;
+ini isObstacleTurn;
 
 gar initiallyRobotAtZero:
-robot[0] = 1 & robot[1] = 1;
+ini robot[0] = 1 & robot[1] = 1;
 
 asm initiallyNoGlitch:
-noGlitch;
+ini noGlitch;
 
 asm initialGlitches:
-glitches = 0;
+ini glitches = 0;
 
 asm addGlitch:
-G (isGlitch->(next(glitches)=glitches+1)) & (noGlitch->(next(glitches)=glitches));
+always (isGlitch->(next(glitches)=glitches+1)) & (noGlitch->(next(glitches)=glitches));
 
 asm maxGlitches:
-G next(glitches = NUM_OF_GLITCHES -> noGlitch);
+always next(glitches = NUM_OF_GLITCHES -> noGlitch);
 
 asm glitchOnlyWhenObstacleTurn:
-G next(isRobotTurn->noGlitch);
+always next(isRobotTurn->noGlitch);
 
 asm turnSwitches:
-G ((isObstacleTurn | obsWait)->next(isRobotTurn)) & ((isRobotTurn & !obsWait)->next(isObstacleTurn));
+always ((isObstacleTurn | obsWait)->next(isRobotTurn)) & ((isRobotTurn & !obsWait)->next(isObstacleTurn));
 
 asm obswaitSwitches:
-G ((isRobotTurn | isGlitch)->(next(obsWait) = !obsWait)) & ((isObstacleTurn & noGlitch)->(next(obsWait) = obsWait));
+always ((isRobotTurn | isGlitch)->(next(obsWait) = !obsWait)) & ((isObstacleTurn & noGlitch)->(next(obsWait) = obsWait));
 
 asm obstacleDoesNotMoveAtRobotTurn:
-G isRobotTurn -> (next(obstacle[0]) = obstacle[0] & next(obstacle[1]) = obstacle[1]);
+always isRobotTurn -> (next(obstacle[0]) = obstacle[0] & next(obstacle[1]) = obstacle[1]);
 
 gar robotDoesNotMoveAtObstacleTurn:
-G isObstacleTurn -> (next(robot[0]) = robot[0] & next(robot[1]) = robot[1]);
+always isObstacleTurn -> (next(robot[0]) = robot[0] & next(robot[1]) = robot[1]);
 
 predicate moveRobot(Int(1..DIM_SIZE) pos):
   pos+1 = next(pos) |
@@ -66,20 +66,20 @@ predicate moveObstacle(Int(1..DIM_SIZE_MINUS_ONE) pos):
   pos-1 = next(pos);    
 
 asm obstacleMovesAtMostOne:
-G moveObstacle(obstacle[0]) & moveObstacle(obstacle[1]);
+always moveObstacle(obstacle[0]) & moveObstacle(obstacle[1]);
 
 asm obstacleIsSmart:
-G isObstacleTurn ->
+always isObstacleTurn ->
   ((obstacle[0] > robot[0] -> next(obstacle[0]) = obstacle[0] - 1) &
    (obstacle[0] < robot[0] - 1 -> next(obstacle[0]) = obstacle[0] + 1) &
    (obstacle[1] > robot[1] -> next(obstacle[1]) = obstacle[1] - 1) &
    (obstacle[1] < robot[1] - 1 -> next(obstacle[1]) = obstacle[1] + 1));
 
 gar robotMovesAtMostOne:
-G moveRobot(robot[0]) & moveRobot(robot[1]);
+always moveRobot(robot[0]) & moveRobot(robot[1]);
 
 gar robotAvoidsObstacle:
-G (robot[0] != obstacle[0] | robot[1] != obstacle[1]) &
+always (robot[0] != obstacle[0] | robot[1] != obstacle[1]) &
 (robot[0] != obstacle[0] + 1 | robot[1] != obstacle[1]) &
 (robot[0] != obstacle[0] | robot[1] != obstacle[1] + 1) &
 (robot[0] != obstacle[0] + 1 | robot[1] != obstacle[1] + 1);

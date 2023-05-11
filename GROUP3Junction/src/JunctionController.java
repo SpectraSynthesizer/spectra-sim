@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 
 
 //wrapper class for spectra's controller
@@ -44,7 +44,7 @@ class JunctionController {
 			for (String env : junctionState.getEnvState().keySet()) {
 				inputs.put(env, junctionState.getEnvVariable(env));
 			}
-			ctrlExec = new ControllerExecutor(new BasicJitController(), "out");
+			ctrlExec = new ControllerExecutor(new BasicJitController(), "out/jit", "JunctionModule");
 			ctrlExec.initState(inputs);
 		} catch (Exception e) {
 			e.printStackTrace();

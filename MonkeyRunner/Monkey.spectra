@@ -7,7 +7,7 @@ import "DwyerPatterns.spectra"
  * for it to move between places. 
  */
  
-module Monkey
+spec Monkey
 
 /**
  * we declare a variable controlled by the system using keyword sys
@@ -32,7 +32,7 @@ define
  * this guarantee has to hold in the initial state
  */	
 gar 
-  inBed;  
+  ini inBed;  
 
 /**
  * The guarantees starting with G hold in all states. We can refer to the next 
@@ -41,28 +41,28 @@ gar
  * note that these two guarantees only allow moving in diagonals
  */
 gar
-  G monkey[0]+1 = next(monkey[0]) | 
+  always monkey[0]+1 = next(monkey[0]) | 
     monkey[0]-1 = next(monkey[0]); 
 gar
-  G monkey[1]+1 = next(monkey[1]) | 
+  always monkey[1]+1 = next(monkey[1]) | 
     monkey[1]-1 = next(monkey[1]); 
 
 /**
  * guarantees starting with GF must hold infinitely often
  */
 gar
-  GF inBed;
+  alwEv inBed;
   
 gar
-  GF atTV;
+  alwEv atTV;
   
   
 /**
  * guarantees can instantiate patterns
  */  
 gar afterTVeventuallyGoToBed: 
-  pRespondsToS(atTV, inBed);
+  S_responds_to_P_globally(inBed, atTV);
     
 gar haveShowerAfterLeavingTVandGoingToBed:
-  pBecomesTrue_betweenQandR(inShower, atTV, inBed);  
+  P_becomes_true_between_Q_and_R(inShower, atTV, inBed);  
   

@@ -46,7 +46,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 
 @SuppressWarnings("serial")
 public class DiningPhilosophers extends JComponent {
@@ -94,7 +94,7 @@ public class DiningPhilosophers extends JComponent {
 				// by default, creates a log file of the execution in ./logs folder
 				// If you do not see the ./logs folder, refresh the Eclipse package explorer
 				try {
-					ctrlExec = new ControllerExecutor(new BasicJitController(), "out");
+					ctrlExec = new ControllerExecutor(new BasicJitController(), "out/jit", "DiningPhilosophers");
 					ctrlExec.initState(inputs);
 				} catch (IOException e1) {
 					e1.printStackTrace();

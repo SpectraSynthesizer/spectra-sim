@@ -49,7 +49,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
 
 public class smartHome extends JPanel{
@@ -135,7 +135,7 @@ public class smartHome extends JPanel{
 				
 				Map<String,String> inputs = new HashMap<>();
 				try {
-					executor = new ControllerExecutor(new BasicJitController(), "out");
+					executor = new ControllerExecutor(new BasicJitController(), "out/jit", "SmartHome1_sprint01_ver1");
 					inputs.put("nightMode" , "false");
 					executor.initState(inputs);
 				} catch (Exception e) {

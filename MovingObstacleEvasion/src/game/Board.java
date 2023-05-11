@@ -40,7 +40,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import tau.smlab.syntech.controller.executor.ControllerExecutor;
-import tau.smlab.syntech.controller.jit.BasicJitController;
+import tau.smlab.syntech.games.controller.jits.BasicJitController;
 
 @SuppressWarnings("serial")
 public class Board extends JFrame {
@@ -48,7 +48,7 @@ public class Board extends JFrame {
 	final int dim = 8;
 	final int numOfGlitches = 1;
 	final int dimLen = 100;
-	int[] robot = new int[] { 0, 0 };
+	int[] robot = new int[] { 1, 1  };
 	int[] obstacle = new int[] { dim - 1, dim - 1 };
 	BufferedImage m;
 	ControllerExecutor executor;
@@ -104,26 +104,26 @@ public class Board extends JFrame {
 			}
 		}));
 		
-		executor = new ControllerExecutor(new BasicJitController(), "out");
+		executor = new ControllerExecutor(new BasicJitController(), "out/jit", "MovingObstacle");
 		m = ImageIO.read(new File("img/robot.jpg"));
 
-		inputs.put("obstacle[0]", new Integer(obstacle[0]).toString());
-		inputs.put("obstacle[1]", new Integer(obstacle[1]).toString());
-		inputs.put("isObstacleTurn", new Boolean(isObstacleTurn).toString());
-		inputs.put("obsWait", new Boolean(obsWait).toString());
-		inputs.put("glitches", new Integer(glitches).toString());
-		inputs.put("isGlitch", new Boolean(isGlitch).toString());
+		inputs.put("obstacle[0]", Integer.toString(obstacle[0]));
+		inputs.put("obstacle[1]", Integer.toString(obstacle[1]));
+		inputs.put("isObstacleTurn", Boolean.toString(isObstacleTurn));
+		inputs.put("obsWait", Boolean.toString(obsWait));
+		inputs.put("glitches", Integer.toString(glitches));
+		inputs.put("isGlitch", Boolean.toString(isGlitch));
 		executor.initState(inputs);
 		
 		handleOutputs();
 
 		while (run) {
-			inputs.put("obstacle[0]", new Integer(obstacle[0]).toString());
-			inputs.put("obstacle[1]", new Integer(obstacle[1]).toString());
-			inputs.put("isObstacleTurn", new Boolean(isObstacleTurn).toString());
-			inputs.put("obsWait", new Boolean(obsWait).toString());
-			inputs.put("glitches", new Integer(glitches).toString());
-			inputs.put("isGlitch", new Boolean(isGlitch).toString());
+			inputs.put("obstacle[0]", Integer.toString(obstacle[0]));
+			inputs.put("obstacle[1]", Integer.toString(obstacle[1]));
+			inputs.put("isObstacleTurn", Boolean.toString(isObstacleTurn));
+			inputs.put("obsWait", Boolean.toString(obsWait));
+			inputs.put("glitches", Integer.toString(glitches));
+			inputs.put("isGlitch", Boolean.toString(isGlitch));
 
 			executor.updateState(inputs);
 
@@ -194,22 +194,22 @@ public class Board extends JFrame {
 		}
 
 		g.setColor(Color.BLACK);
-		g.fillRect(obstacle[0] * dimLen, obstacle[1] * dimLen, dimLen, dimLen);
-		g.fillRect((obstacle[0] + 1) * dimLen, obstacle[1] * dimLen, dimLen, dimLen);
-		g.fillRect(obstacle[0] * dimLen, (obstacle[1] + 1) * dimLen, dimLen, dimLen);
-		g.fillRect((obstacle[0] + 1) * dimLen, (obstacle[1] + 1) * dimLen, dimLen, dimLen);
+		g.fillRect((obstacle[0]-1) * dimLen, (obstacle[1]-1) * dimLen, dimLen, dimLen);
+		g.fillRect(obstacle[0] * dimLen, (obstacle[1]-1) * dimLen, dimLen, dimLen);
+		g.fillRect((obstacle[0]-1) * dimLen, (obstacle[1]) * dimLen, dimLen, dimLen);
+		g.fillRect((obstacle[0]) * dimLen, (obstacle[1]) * dimLen, dimLen, dimLen);
 
 		if (m != null) {
-			g.drawImage(m, robot[0] * dimLen, robot[1] * dimLen, null);
+			g.drawImage(m, (robot[0]-1) * dimLen, (robot[1]-1) * dimLen, null);
 		} else {
 			g.setColor(Color.BLUE);
-			g.fillRect(robot[0] * dimLen, robot[1] * dimLen, dimLen, dimLen);
+			g.fillRect((robot[0]-1) * dimLen, (robot[1]-1) * dimLen, dimLen, dimLen);
 		}
 	}
 
 	public static void main(String args[]) throws Exception {
 		Board check = new Board();
-		check.setTitle("robot");
+		check.setTitle("Moving Obstacle Evasion");
 		check.setSize(check.dim * check.dimLen, check.dim * check.dimLen);
 		check.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		check.setVisible(true);

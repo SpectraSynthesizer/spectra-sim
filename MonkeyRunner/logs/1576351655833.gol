@@ -1,0 +1,11 @@
+<banana[0]:7, banana[1]:1, monkey[0]:0, monkey[1]:0, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S0, Zn:0>
+<banana[0]:7, banana[1]:1, monkey[0]:0, monkey[1]:0, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S0, Zn:1>
+<banana[0]:7, banana[1]:1, monkey[0]:1, monkey[1]:1, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S0, Zn:1>
+<banana[0]:7, banana[1]:1, monkey[0]:2, monkey[1]:2, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S0, Zn:1>
+<banana[0]:7, banana[1]:1, monkey[0]:3, monkey[1]:3, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:2>
+<banana[0]:7, banana[1]:1, monkey[0]:4, monkey[1]:2, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:2>
+<banana[0]:7, banana[1]:1, monkey[0]:5, monkey[1]:3, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:2>
+<banana[0]:7, banana[1]:1, monkey[0]:6, monkey[1]:2, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:2>
+<banana[0]:7, banana[1]:1, monkey[0]:7, monkey[1]:1, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:2>
+<banana[0]:3, banana[1]:3, monkey[0]:7, monkey[1]:0, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:3>
+<banana[0]:3, banana[1]:3, monkey[0]:7, monkey[1]:1, SYS_CONSTRAINT.8.pBecomesTrue_betweenQandR.state:S1, Zn:0>

@@ -27,34 +27,34 @@ sys Int(0..NUMBEROFDISKSMINUSONE) moveDiskNumber;
 sys Int(0..NUMBEROFTOWERSMINUSONE) moveDiskToTower;
   
 asm startLeft:
-forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+ini forall i in Int(0..NUMBEROFDISKSMINUSONE) .
  diskPosition[i] = 0;
   
 asm carryingADiskChangesItsPosition:
-G forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+always forall i in Int(0..NUMBEROFDISKSMINUSONE) .
  forall j in Int(0..NUMBEROFTOWERSMINUSONE) .
   (moveDiskNumber=i & moveDiskToTower=j) -> (next(diskPosition[i]) = j);
 
 asm notCarryingADiskKeepsDiskPosition:
-G forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+always forall i in Int(0..NUMBEROFDISKSMINUSONE) .
  (!(moveDiskNumber=i))->(diskPosition[i]=next(diskPosition[i])) ;
     
 gar cantPutALargerDiskOnTopOfSmallerDisk:
-G forall i in Int(1..NUMBEROFDISKSMINUSONE) . 
+always forall i in Int(1..NUMBEROFDISKSMINUSONE) . 
  forall j in Int(0..NUMBEROFDISKSMINUSTWO) . 
   forall k in Int(0..NUMBEROFTOWERSMINUSONE) . 
    (j<i & moveDiskNumber=i & diskPosition[j]=k) -> moveDiskToTower != k;
     
 gar mustMoveSmallestDiskFirst:
-G forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+always forall i in Int(0..NUMBEROFDISKSMINUSONE) .
  forall j in Int(1..NUMBEROFDISKSMINUSONE) .
   (j>i & diskPosition[i]=diskPosition[j]) -> moveDiskNumber!=j;
      
 gar allDisksMustReachRighmostTower:
-GF forall i in Int(0..NUMBEROFDISKSMINUSONE) .
+alwEv forall i in Int(0..NUMBEROFDISKSMINUSONE) .
  diskPosition[i]=NUMBEROFTOWERSMINUSONE;
  
 gar onceSolvedNoDiskMoves:
-G (forall i in Int(0..NUMBEROFDISKSMINUSONE) .diskPosition[i]=NUMBEROFTOWERSMINUSONE) -> 
+always (forall i in Int(0..NUMBEROFDISKSMINUSONE) .diskPosition[i]=NUMBEROFTOWERSMINUSONE) -> 
   (forall i in Int(0..NUMBEROFDISKSMINUSONE) .diskPosition[i]=next(diskPosition[i]));
  
