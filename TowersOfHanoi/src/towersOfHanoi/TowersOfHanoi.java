@@ -73,10 +73,6 @@ public class TowersOfHanoi extends JComponent {
 				// If you do not see the ./logs folder, refresh the Eclipse package explorer
 				try {
 					ctrlExec = new ControllerExecutor(new BasicJitController(), "out/jit", "TowersOfHanoi");
-					
-					// We pass an empty map to the executor because there is no input from the
-					// environment in this simulation
-					ctrlExec.initState(new HashMap<String,String>());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -95,13 +91,18 @@ public class TowersOfHanoi extends JComponent {
 				}
 
 				repaint();
-
+				boolean ini = true;
 				while (run) {
 
 					try {
 						// We pass an empty map to the executor because there is no input from the
 						// environment in this simulation
-						ctrlExec.updateState(new HashMap<String,String>());
+						if (ini) {
+							ctrlExec.initState(new HashMap<String,String>());
+							ini = false;
+						} else {
+							ctrlExec.updateState(new HashMap<String,String>());
+						}
 					} catch (Exception ce) {
 						// The above inputs violate the assumptions
 						System.err.println(ce.getMessage());
